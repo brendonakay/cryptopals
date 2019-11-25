@@ -13,6 +13,7 @@ var Alphabet = []byte("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 type Result struct {
 	Rank            int
 	ResultByteArray []byte
+	RestultString   string
 	XorByte         byte
 }
 
@@ -54,14 +55,15 @@ func main() {
 		}
 		r = append(r, Result{
 			Rank:            RankEnglishness(a),
-			ResultByteArray: a,
+			ResultByteArray: a[:],
+			RestultString:   strconv.QuoteToASCII(string(a)),
 			XorByte:         byte(i),
 		})
 		//fmt.Printf("Key: %s\n", strconv.QuoteToASCII(string(a)))
 	}
 	// Wicked awesome sorting closure.
-	sort.SliceStable(r, func(i, j int) bool { return r[i].Rank < r[j].Rank })
-	for i := range r {
-		fmt.Println(strconv.QuoteToASCII(string(r[i].ResultByteArray)))
+	sort.SliceStable(r, func(i, j int) bool { return r[i].Rank > r[j].Rank })
+	for _, s := range r {
+		fmt.Println(s.RestultString)
 	}
 }
